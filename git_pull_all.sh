@@ -3,8 +3,8 @@ for dir in */
 do
   cols=$(tput cols)
 
-  if git -C "$dir rev-parse &> /dev/null"; then
-    if git -C "$dir status --porcelain"; then
+  if git -C "$dir" rev-parse &> /dev/null; then
+    if git -C "$dir" status --porcelain; then
       message="##### Pulling $dir "
       remain_n=$(( cols-${#message} ))
 
@@ -16,7 +16,7 @@ do
       done
 
       printf "%s%s\\n" "$message" "$fill"
-      "git -C $dir pull"
+      git -C "$dir" pull
     fi
   fi
 done
