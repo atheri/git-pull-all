@@ -4,20 +4,18 @@ do
   cols=$(tput cols)
 
   if git -C "$dir" rev-parse &> /dev/null; then
-    if git -C "$dir" status --porcelain; then
-      message="##### Pulling $dir "
-      remain_n=$(( cols-${#message} ))
+    message="##### ff merge - $dir "
+    remain_n=$(( cols-${#message} ))
 
-      fill=""
-      fill_c="#"
-      for (( i=0; i<remain_n; i++ ))
-      do
-        fill=$fill$fill_c
-      done
+    fill=""
+    fill_c="#"
+    for (( i=0; i<remain_n; i++ ))
+    do
+      fill=$fill$fill_c
+    done
 
-      printf "%s%s\\n" "$message" "$fill"
-      git -C "$dir" pull
-    fi
+    printf "%s%s\\n" "$message" "$fill"
+    git -C "$dir" merge --ff-only
   fi
 done
 
