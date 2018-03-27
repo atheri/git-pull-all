@@ -1,4 +1,19 @@
 #!/bin/bash
+
+print_seperator() {
+  text=$1
+  symbol=$2
+
+  remain_n=$(( cols-${#text} ))
+  fill=""
+  for (( i=0; i<remain_n; i++ ))
+  do
+    fill=$fill$symbol
+  done
+  printf "%s%s\\n" "$text" "$fill"
+}
+
+## MAIN ##
 for dir in */
 do
   cols=$(tput cols)
@@ -6,23 +21,11 @@ do
   if git -C "$dir" rev-parse &> /dev/null; then
     branch_name=$(git -C "$dir" name-rev --name-only HEAD)
     message="----# $dir$branch_name #"
-    remain_n=$(( cols-${#message} ))
-
-    fill=""
-    fill_c="-"
-    for (( i=0; i<remain_n; i++ ))
-    do
-      fill=$fill$fill_c
-    done
-
-    printf "%s%s\\n" "$message" "$fill"
+    
+    print_seperator "$message" "-"
+    
     git -C "$dir" pull --ff-only
   fi
 done
-
-
-
-print_seperator() {
-  true;
-}
+## END MAIN ##
 
